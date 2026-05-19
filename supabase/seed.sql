@@ -1,0 +1,52 @@
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- 시드 데이터 (개발/데모용)
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- 사용법:
+-- 1. Supabase Dashboard → Authentication → Users에서 계정 직접 생성
+-- 2. 생성된 UUID로 아래 INSERT 문 수정 후 실행
+-- 또는
+-- 3. 앱에서 /signup으로 회원가입 (자동으로 profiles 생성됨)
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+-- 데모 케이스 (회원가입 후 본인 ID로 agent_id를 변경 후 실행)
+
+-- DO $$
+-- DECLARE
+--   demo_agent_id UUID := 'YOUR_AGENT_USER_ID';
+--   demo_teacher_id UUID := 'YOUR_TEACHER_USER_ID';
+--   demo_manager_id UUID := 'YOUR_MANAGER_USER_ID';
+-- BEGIN
+--
+--   INSERT INTO cases (
+--     agent_id, apply_date, parent_name, parent_phone,
+--     child_name, child_age, failure_reason, failure_detail,
+--     region, decision_maker, family_info,
+--     approval_status, approval_date, approved_by, teacher_id,
+--     lesson_date, lesson_time, lesson_result, closing_signal
+--   ) VALUES
+--   (
+--     demo_agent_id, CURRENT_DATE - INTERVAL '7 days',
+--     'Ibu Dewi', '0812-3456-7890',
+--     'Rafi', 5, '① 남편 반대', '남편이 학원 선호',
+--     'Jakarta Pusat', '엄마', '외동',
+--     'approved', NOW() - INTERVAL '5 days', demo_manager_id, demo_teacher_id,
+--     CURRENT_DATE - INTERVAL '4 days', '14:00', 'on_hold', 'medium'
+--   ),
+--   (
+--     demo_agent_id, CURRENT_DATE - INTERVAL '3 days',
+--     'Ibu Sari', '0813-4567-8901',
+--     'Aldo', 4, '② 큰 지출 부담', '분할 결제 가능 여부 문의',
+--     'Jakarta Selatan', '부부공동', '형제 있음',
+--     'pending', NULL, NULL, NULL,
+--     NULL, NULL, NULL, NULL
+--   ),
+--   (
+--     demo_agent_id, CURRENT_DATE - INTERVAL '1 day',
+--     'Ibu Linda', '0814-5678-9012',
+--     'Nina', 6, '③ 우선순위 미흡', '다른 학원 5개 비교 중',
+--     'Jakarta Timur', '엄마', '외동',
+--     'approved', NOW(), demo_manager_id, demo_teacher_id,
+--     CURRENT_DATE + INTERVAL '2 days', '16:30', NULL, NULL
+--   );
+--
+-- END $$;

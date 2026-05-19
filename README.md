@@ -1,127 +1,157 @@
-# Lidia 시트 운영 시스템 - 단계적 도입 가이드
+# Lidia 운영 시스템
 
-> **대상**: 영업 에이전트 10명+, 빔블 교사 10명+ 운영하는 Lidia 본부장님과 매니저
-> **목표**: 현재 단일 시트의 한계를 극복하고, 역할별 최적화된 운영 시스템으로 단계적 전환
+영업 에이전트와 빔블 교사를 위한 통합 운영 SaaS.
+보류된 학부모 케이스를 신청부터 재클로징까지 한 곳에서 추적합니다.
 
----
+## ✨ 주요 기능
 
-## 📋 패키지 개요
+- **역할 기반 접근**: 본부장 / 매니저 / 에이전트 / 교사 각각의 최적화된 뷰
+- **케이스 추적**: 신청 → 매니저 승인 → 교사 배정 → 수업 → 재클로징
+- **D-Day 자동 계산**: 재클로징 3일 데드라인 카운트다운
+- **권한 분리 (RLS)**: 에이전트는 본인 케이스, 교사는 배정된 케이스만 조회
 
-이 패키지는 Google Sheets 운영을 **3단계 레벨로 점진적 고도화**하기 위한 완전한 자료 모음입니다.
+## 🛠️ 기술 스택
 
-```
-Week 1-2  →  Level 1 (Google Sheets 기본 기능)
-Week 3-6  →  Level 2 (역할별 시트 분리)
-Week 7-12 →  Level 3 (Apps Script 자동화)
-```
+- **프레임워크**: Next.js 14 (App Router) + TypeScript
+- **DB / 인증**: Supabase (PostgreSQL + Auth + RLS)
+- **UI**: Tailwind CSS + 자체 컴포넌트
+- **배포**: Vercel 권장
 
-각 레벨은 **이전 레벨 위에 쌓이는 구조**이므로, 단계를 건너뛰지 마세요.
+## 🚀 시작하기
 
----
+### 1. 저장소 클론 후 의존성 설치
 
-## 🗂️ 디렉토리 구조
-
-```
-Lidia-app/
-├── README.md                     ← 이 파일 (전체 개요)
-├── roadmap.md                    ← 12주 단계별 로드맵
-│
-├── level-1/                      ← Week 1-2: Google Sheets 기본
-│   ├── README.md
-│   ├── 01-dropdowns-validation.md     ← 드롭다운 + 입력 검증
-│   ├── 02-conditional-formatting.md   ← 조건부 서식 (자동 색상)
-│   ├── 03-d-day-formulas.md           ← D-Day 자동 계산
-│   ├── 04-role-based-filters.md       ← 역할별 필터 뷰
-│   └── 05-sheet-protection.md         ← 시트 보호 설정
-│
-├── level-2/                      ← Week 3-6: 역할별 시트 분리
-│   ├── README.md
-│   ├── 01-agent-view.md               ← 에이전트 전용 시트
-│   ├── 02-teacher-view.md             ← 교사 전용 시트
-│   ├── 03-manager-dashboard.md        ← 매니저 대시보드
-│   └── 04-input-forms.md              ← 입력 폼 분리
-│
-├── level-3/                      ← Week 7-12: 자동화
-│   ├── README.md
-│   ├── setup-guide.md                 ← Apps Script 설치 가이드
-│   └── scripts/
-│       ├── notifications.gs           ← 자동 알림 (이메일/왓츠앱)
-│       ├── auto-assignment.gs         ← 교사 자동 배정
-│       ├── daily-summary.gs           ← 매일 요약 알림
-│       └── monthly-report.gs          ← 월간 자동 리포트
-│
-└── templates/                    ← CSV 템플릿
-    ├── tracker-template.csv           ← 메인 트래커 템플릿
-    └── operations-guide.csv           ← 운영 가이드 템플릿
+```bash
+git clone <repo-url>
+cd Lidia-app
+npm install
 ```
 
----
+### 2. Supabase 프로젝트 생성
 
-## 🚀 시작하기 (Quick Start)
+1. [supabase.com](https://supabase.com)에서 새 프로젝트 생성
+2. **Project Settings → API**에서 URL과 anon key 복사
 
-### 1단계: 로드맵 확인
-[`roadmap.md`](./roadmap.md)를 먼저 읽으세요. 12주 일정과 각 주차별 산출물이 정리되어 있어요.
+### 3. 환경 변수 설정
 
-### 2단계: Level 1 시작
-[`level-1/README.md`](./level-1/README.md)로 이동해 5가지 기본 기능을 순서대로 적용하세요.
-- 예상 소요 시간: 2-3시간
-- 필요 권한: 시트 편집자
+```bash
+cp .env.example .env.local
+```
 
-### 3단계: 운영하며 발견한 불편함 → Level 2
-2주 운영 후 가장 불편한 부분부터 Level 2로 전환합니다.
-- 가장 효과 큰 것: **매니저 대시보드** 또는 **에이전트 전용 시트**
+`.env.local`을 열어 본인 Supabase 정보로 채웁니다:
 
-### 4단계: 반복 작업 → Level 3 자동화
-손이 가장 많이 가는 작업부터 Apps Script로 자동화합니다.
-- 가장 효과 큰 것: **D-Day 자동 알림** 또는 **신규 신청 알림**
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
+```
 
----
+### 4. 데이터베이스 마이그레이션
 
-## ⚙️ 사전 준비 사항
+Supabase Dashboard → **SQL Editor**에서 순서대로 실행:
 
-### 필수
-- [ ] Google 계정 (조직용 Workspace 권장)
-- [ ] 기존 운영 시트 백업 (Sheets > 파일 > 사본 만들기)
-- [ ] 팀원 이메일 리스트 (에이전트/교사/매니저)
+```
+supabase/migrations/001_schema.sql   ← 테이블, 트리거, 뷰
+supabase/migrations/002_rls.sql      ← Row Level Security 정책
+supabase/seed.sql                    ← (선택) 데모 데이터
+```
 
-### 권장
-- [ ] 팀원별 역할 정의 (편집 가능 범위)
-- [ ] 알림 채널 정리 (이메일 vs 왓츠앱)
-- [ ] 월간 리포트 수신자 목록
+### 5. 개발 서버 실행
 
----
+```bash
+npm run dev
+```
 
-## 📊 레벨별 효과 요약
+[http://localhost:3000](http://localhost:3000) 접속
 
-| 항목 | Level 1 | Level 2 | Level 3 |
-|---|---|---|---|
-| **구축 시간** | 2-3시간 | 1-2주 | 2-4주 |
-| **학습 부담** | 낮음 | 중간 | 매니저 1명 학습 |
-| **실수 감소** | 30% ↓ | 60% ↓ | 90% ↓ |
-| **확인 시간** | 50% ↓ | 80% ↓ | 95% ↓ |
-| **확장성** | ~20명 | ~50명 | 100명+ |
+### 6. 첫 사용자 가입
 
----
+- `/signup`에서 회원가입 시 역할 선택
+- 데모 시 매니저/본부장으로 가입해서 권한 확인
+- 실제 운영 시 매니저/본부장은 Supabase Dashboard에서 수동 부여
 
-## 🆘 트러블슈팅
+## 📁 프로젝트 구조
 
-### "수식이 작동하지 않아요"
-→ [`level-1/03-d-day-formulas.md`](./level-1/03-d-day-formulas.md)의 "자주 발생하는 오류" 섹션 확인
+```
+app/
+├── (auth)/              ← 로그인/회원가입
+├── (app)/               ← 인증 필요 영역
+│   ├── dashboard/       ← 역할별 대시보드 (자동 분기)
+│   │   ├── manager-dashboard.tsx
+│   │   ├── agent-dashboard.tsx
+│   │   └── teacher-dashboard.tsx
+│   └── cases/           ← 케이스 관리
+│       ├── new/         ← 신규 등록 폼
+│       └── [id]/        ← 상세 + 매니저/교사 액션
+├── layout.tsx
+├── page.tsx             ← 랜딩 페이지
+└── globals.css
 
-### "Apps Script 권한 오류"
-→ [`level-3/setup-guide.md`](./level-3/setup-guide.md)의 "권한 설정" 섹션 확인
+components/
+├── ui/                  ← 기본 UI (button, input, card 등)
+└── sidebar.tsx          ← 사이드바 + 모바일 네비
 
-### "필터 뷰가 다른 사람에게도 보여요"
-→ [`level-1/04-role-based-filters.md`](./level-1/04-role-based-filters.md)의 "개인 필터 vs 공유 필터" 섹션 확인
+lib/
+├── supabase/            ← Supabase 클라이언트
+├── types.ts             ← TypeScript 타입 + enum 매핑
+└── utils.ts             ← cn, formatDate, calculateDDay
 
----
+supabase/
+├── migrations/
+│   ├── 001_schema.sql   ← 스키마
+│   └── 002_rls.sql      ← RLS 정책
+└── seed.sql             ← 데모 데이터
 
-## 📞 다음 단계
+docs/                    ← 운영 가이드 (Sheets 기반 단계적 도입)
+├── README.md
+├── roadmap.md
+├── level-1/             ← Sheets 기본 기능
+├── level-2/             ← 역할별 시트 분리
+├── level-3/             ← Apps Script 자동화
+└── templates/
+```
 
-각 레벨 적용 후 다음을 점검하세요:
+## 👤 역할별 권한
 
-1. **Level 1 완료 체크리스트**: [`level-1/README.md`](./level-1/README.md) 하단
-2. **Level 2 완료 체크리스트**: [`level-2/README.md`](./level-2/README.md) 하단
-3. **Level 3 완료 체크리스트**: [`level-3/README.md`](./level-3/README.md) 하단
+| 액션 | 본부장 | 매니저 | 에이전트 | 교사 |
+|---|---|---|---|---|
+| 전체 케이스 조회 | ✅ | ✅ | 본인만 | 배정만 |
+| 케이스 생성 | ✅ | ✅ | ✅ | ❌ |
+| 승인/반려 | ✅ | ✅ | ❌ | ❌ |
+| 교사 배정 | ✅ | ✅ | ❌ | ❌ |
+| 수업 결과 입력 | ✅ | ✅ | ❌ | 배정만 |
 
-준비됐다면 **[로드맵](./roadmap.md)**부터 확인하세요!
+권한은 Supabase RLS로 강제됩니다 (앱 레벨이 아닌 DB 레벨).
+
+## 🌐 Vercel 배포
+
+```bash
+# 1. Vercel CLI 설치
+npm i -g vercel
+
+# 2. 배포
+vercel
+
+# 3. 환경 변수 입력 (CLI 안내에 따라)
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+```
+
+또는 Vercel Dashboard에서 GitHub 연동 → 자동 배포.
+
+## 📚 운영 가이드
+
+[docs/](./docs)에 Google Sheets 기반 단계적 도입 가이드가 있습니다.
+웹앱과 별개로, 작은 팀에서 Sheets로 시작하고 싶을 때 참고하세요.
+
+## 🧪 데모 시나리오
+
+1. **본부장**으로 회원가입
+2. **에이전트**로 또 다른 계정 회원가입 (다른 브라우저/시크릿)
+3. 에이전트로: 신규 케이스 등록
+4. 본부장으로: 케이스 승인 + 교사 배정
+5. **교사**로 또 다른 계정 회원가입
+6. 교사로: 본인 일정 확인 + 수업 결과 입력
+
+## 📜 라이선스
+
+Proprietary. 내부 운영 전용.
