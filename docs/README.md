@@ -51,8 +51,10 @@ Lidia-app/
 │       └── monthly-report.gs          ← 월간 자동 리포트
 │
 └── templates/                    ← CSV 템플릿
-    ├── tracker-template.csv           ← 메인 트래커 템플릿
-    └── operations-guide.csv           ← 운영 가이드 템플릿
+    ├── tracker-template.csv             ← 메인 트래커 템플릿
+    ├── teacher-daily-view-template.csv  ← 교사 데일리 뷰 (수업 전후 보는 시트)
+    ├── teacher-glossary.csv             ← 영업 용어 ↔ 교사 친화 용어 매핑표
+    └── operations-guide.csv             ← 운영 가이드 템플릿
 ```
 
 ---
