@@ -12,11 +12,14 @@
 
 | 순서 | 항목 | 문서 | 소요 시간 |
 |---|---|---|---|
+| **0** | **시트 헤더·구조 정리 (먼저!)** | [**00-sheet-header-cleanup.md**](./00-sheet-header-cleanup.md) | **1~2시간** |
 | 1 | 드롭다운 + 입력 검증 | [01-dropdowns-validation.md](./01-dropdowns-validation.md) | 30분 |
 | 2 | 조건부 서식 (자동 색상) | [02-conditional-formatting.md](./02-conditional-formatting.md) | 45분 |
 | 3 | D-Day 자동 계산 | [03-d-day-formulas.md](./03-d-day-formulas.md) | 30분 |
 | 4 | 역할별 필터 뷰 | [04-role-based-filters.md](./04-role-based-filters.md) | 30분 |
 | 5 | 시트 보호 설정 | [05-sheet-protection.md](./05-sheet-protection.md) | 15분 |
+
+> ⚠️ **Step 0은 반드시 먼저** 진행하세요. 컬럼명·구조가 정리되지 않은 상태에서 드롭다운·조건부서식을 적용하면 헤더 변경 시 모두 다시 작업해야 합니다.
 
 ---
 

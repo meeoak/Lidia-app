@@ -28,6 +28,7 @@ Lidia-app/
 │
 ├── level-1/                      ← Week 1-2: Google Sheets 기본
 │   ├── README.md
+│   ├── 00-sheet-header-cleanup.md     ← 헤더·구조 정리 (가장 먼저!)
 │   ├── 01-dropdowns-validation.md     ← 드롭다운 + 입력 검증
 │   ├── 02-conditional-formatting.md   ← 조건부 서식 (자동 색상)
 │   ├── 03-d-day-formulas.md           ← D-Day 자동 계산
@@ -51,7 +52,8 @@ Lidia-app/
 │       └── monthly-report.gs          ← 월간 자동 리포트
 │
 └── templates/                    ← CSV 템플릿
-    ├── tracker-template.csv             ← 메인 트래커 템플릿
+    ├── tracker-template.csv             ← 메인 트래커 템플릿 (단순 버전)
+    ├── bimble-tracker-improved.csv      ← Bimbel 트래커 개선판 (실제 26컬럼 구조 기반)
     ├── teacher-daily-view-template.csv  ← 교사 데일리 뷰 (수업 전후 보는 시트)
     ├── teacher-glossary.csv             ← 영업 용어 ↔ 교사 친화 용어 매핑표
     └── operations-guide.csv             ← 운영 가이드 템플릿
@@ -64,10 +66,11 @@ Lidia-app/
 ### 1단계: 로드맵 확인
 [`roadmap.md`](./roadmap.md)를 먼저 읽으세요. 12주 일정과 각 주차별 산출물이 정리되어 있어요.
 
-### 2단계: Level 1 시작
-[`level-1/README.md`](./level-1/README.md)로 이동해 5가지 기본 기능을 순서대로 적용하세요.
-- 예상 소요 시간: 2-3시간
+### 2단계: Level 1 시작 — 헤더 정리부터!
+[`level-1/README.md`](./level-1/README.md)로 이동해 Step 0(헤더·구조 정리)부터 순서대로 적용하세요.
+- 예상 소요 시간: 3-5시간 (헤더 정리 1-2시간 + 나머지 2-3시간)
 - 필요 권한: 시트 편집자
+- 첫 시작: [`level-1/00-sheet-header-cleanup.md`](./level-1/00-sheet-header-cleanup.md)
 
 ### 3단계: 운영하며 발견한 불편함 → Level 2
 2주 운영 후 가장 불편한 부분부터 Level 2로 전환합니다.
